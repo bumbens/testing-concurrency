@@ -1,0 +1,51 @@
+plugins {
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Use JUnit 4 test framework
+    testImplementation 'junit:junit:4.13.2'
+
+    // JCStress core library and annotation processor
+    testImplementation 'org.openjdk.jcstress:jcstress-core:0.15'
+    testAnnotationProcessor 'org.openjdk.jcstress:jcstress-core:0.15'
+
+    // Regular app dependency
+    implementation 'com.google.guava:guava:32.1.1-jre'
+}
+
+// Set Java version
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+// Disable -Werror and configure annotation processor for JCStress
+tasks.withType(JavaCompile).configureEach {
+    if (name.toLowerCase().contains("test")) {
+        options.compilerArgs.removeAll { it == '-Werror' }
+        options.annotationProcessorPath = configurations.testAnnotationProcessor
+    }
+}
+
+// Use JUnit 4 test engine (not JUnit 5)
+test {
+    useJUnit()
+}
+
+// JCStress runner task
+task jcstress(type: JavaExec) {
+    dependsOn testClasses
+    main = 'org.openjdk.jcstress.Main'
+    classpath = files(sourceSets.test.output.classesDirs) + sourceSets.test.runtimeClasspath
+    args = ['-v']
+}
+
+application {
+    mainClass = 'thesis.App'
+}
