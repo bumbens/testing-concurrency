@@ -3,11 +3,11 @@ package thesis;
 public class Counter {
     int counter = 0;
 
-    public void increment(){
+    public synchronized void increment(){
         counter++;
     }
 
-    public int get(){
+    public synchronized int get(){
         return counter;
     }
 }
