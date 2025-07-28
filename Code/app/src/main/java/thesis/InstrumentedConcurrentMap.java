@@ -6,28 +6,39 @@ import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
-
+import java.util.function.BiFunction;
 public class InstrumentedConcurrentMap<K, V> {
     private final ConcurrentMap<K, V> map = new ConcurrentHashMap<>();
     private final List<Operation<K, V>> history = Collections.synchronizedList(new ArrayList<>());
     private final AtomicLong clock = new AtomicLong();
 
     public V put(K key, V value){
-        V result = map.put(key, value);
-        record("get", key, value, result);
-        return result;
+        V oldValue = map.put(key, value);
+        record("put", key, value, oldValue);
+        return oldValue;
     }
 
     public V get(K key){
-        V result = map.get(key);
-        record("get", key, null, result);
-        return result;
+        V oldValue = map.get(key);
+        record("get", key, null, oldValue);
+        return oldValue;
     }
 
     public V remove(K key){
-        V result = map.remove(key);
-        record("remove", key, null, result);
-        return result;
+        V oldValue = map.remove(key);
+        record("remove", key, null, oldValue);
+        return oldValue;
+    }
+
+    public V compute(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+        V oldValue = map.get(key);
+        V newValue = map.compute(key, remappingFunction);
+        record("compute", key, oldValue, newValue);
+        return newValue;
+    }
+
+    public boolean containsKey(K key) {
+        return map.containsKey(key);
     }
 
 
