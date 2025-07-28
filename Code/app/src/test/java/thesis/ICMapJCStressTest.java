@@ -51,11 +51,15 @@ public class ICMapJCStressTest {
     map_seq2.put("key", 1);
 
 
+    // Check if the sequences match the map's state
     boolean seq1 = Objects.equals(map_seq1.get("key"), map.get("key")); //Objects.equals to handle nulls
     boolean seq2 = Objects.equals(map_seq2.get("key"), map.get("key")); //Objects.equals to handle nulls
 
     // Record outcomes
+    // Check if the key exists
     r.r1 = map.containsKey("key") ? 1 : 0;
+    // Check if the value is present
+    // If the key exists, it should be 1, otherwise 0
     r.r2 = map.get("key") != null ? 1 : 0;
 
     // Assert linearizability

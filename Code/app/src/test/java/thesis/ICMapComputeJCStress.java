@@ -14,15 +14,15 @@ import org.openjdk.jcstress.infra.results.II_Result;
 
 @JCStressTest
 @Outcome(id = "1, 1", expect = Expect.ACCEPTABLE, desc = "All OK")
-@Outcome(expect = Expect.FORBIDDEN, desc = "Forbidden output")
+@Outcome(expect = Expect.FORBIDDEN, desc = "Unexpected state")
 @State
 public class ICMapComputeJCStress {
     
     private final InstrumentedConcurrentMap<String, Integer> map = new InstrumentedConcurrentMap<>();
-    int v1 = 100;
-    int v2 = 200;
-    private final MapOperation<String, Integer> compute1 = new ComputeOperation<String,Integer>("key", (k, v) -> v1);
-    private final MapOperation<String, Integer> compute2 = new ComputeOperation<String,Integer>("key", (k, v) -> v2);
+    int value1 = 100;
+    int value2 = 200;
+    private final MapOperation<String, Integer> compute1 = new ComputeOperation<String,Integer>("key", (k, v) -> value1);
+    private final MapOperation<String, Integer> compute2 = new ComputeOperation<String,Integer>("key", (k, v) -> value2);
     
     Map<String, Integer> map_seq1 = new HashMap<>();
     Map<String, Integer> map_seq2 = new HashMap<>();
@@ -41,19 +41,24 @@ public class ICMapComputeJCStress {
     public void arbiter(II_Result r) {
         
         //Sequence 1 
-        map_seq1.compute("key", (k, v) -> v1);
-        map_seq1.compute("key", (k, v) -> v2);
+        map_seq1.compute("key", (k, v) -> value1);
+        map_seq1.compute("key", (k, v) -> value2);
 
         //Sequence 2
-        map_seq2.compute("key", (k, v) -> v2);
-        map_seq2.compute("key", (k, v) -> v1);
+        map_seq2.compute("key", (k, v) -> value2);
+        map_seq2.compute("key", (k, v) -> value1);
 
+        // Check if the sequences match the map's state
         boolean seq1 = Objects.equals(map_seq1.get("key"), map.get("key"));
         boolean seq2 = Objects.equals(map_seq2.get("key"), map.get("key"));
 
-        r.r1 = map.containsKey("key") ? 1 : 0;
-        r.r2 = (map.get("key") == v1 || map.get("key") == v2) ? 1 : 0;
+        // Record outcomes
+        // Check if the key exists
+        r.r1 = map.containsKey("key") ? 1 : 0; 
+        // Check if the value is either v1 or v2
+        r.r2 = (map.get("key") == value1 || map.get("key") == value2) ? 1 : 0;
 
+        // Assert linearizability
         assert seq1 || seq2 : "Result non linearizable";
     }
 }
