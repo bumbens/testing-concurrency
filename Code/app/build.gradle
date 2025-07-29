@@ -8,7 +8,8 @@ repositories {
 
 dependencies {
     // Use JUnit 4 test framework
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
 
     // JCStress core library and annotation processor
     testImplementation 'org.openjdk.jcstress:jcstress-core:0.16'

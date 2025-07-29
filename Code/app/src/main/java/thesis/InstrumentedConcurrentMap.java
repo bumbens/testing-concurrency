@@ -7,6 +7,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+
+import thesis.Operations.Operation;
 public class InstrumentedConcurrentMap<K, V> {
     private final ConcurrentMap<K, V> map = new ConcurrentHashMap<>();
     private final List<Operation<K, V>> history = Collections.synchronizedList(new ArrayList<>());
@@ -36,6 +39,14 @@ public class InstrumentedConcurrentMap<K, V> {
         record("compute", key, oldValue, newValue);
         return newValue;
     }
+
+    public V computeIfAbsent(K key, Function<? super K,? extends V> mappingFunction) {
+        V newValue = map.computeIfAbsent(key, mappingFunction);
+        record("computeIfAbsent", key, null, newValue);
+        return newValue;
+    }
+
+
 
     public boolean containsKey(K key) {
         return map.containsKey(key);
