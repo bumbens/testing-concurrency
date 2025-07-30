@@ -10,7 +10,7 @@ import org.openjdk.jcstress.annotations.Expect;
 import org.openjdk.jcstress.annotations.JCStressTest;
 import org.openjdk.jcstress.annotations.Outcome;
 import org.openjdk.jcstress.annotations.State;
-import org.openjdk.jcstress.infra.results.IIZ_Result;
+import org.openjdk.jcstress.infra.results.IZ_Result;
 
 import thesis.InstrumentedConcurrentMap;
 import thesis.Operations.Compute;
@@ -18,8 +18,8 @@ import thesis.Operations.MapOperation;
 import thesis.Operations.Put;
 
 @JCStressTest
-@Outcome(id = "1, 100, true", expect = Expect.ACCEPTABLE, desc = "All OK (Key present, Value equal to value1 of value2, Linearizability OK)")
-@Outcome(id = "1, 200, true", expect = Expect.ACCEPTABLE, desc = "All OK (Key present, Value equal to value1 of value2, Linearizability OK)")
+@Outcome(id = "100, true", expect = Expect.ACCEPTABLE, desc = "All OK (Key present, Value equal to value1 of value2, Linearizability OK)")
+@Outcome(id = "200, true", expect = Expect.ACCEPTABLE, desc = "All OK (Key present, Value equal to value1 of value2, Linearizability OK)")
 @Outcome(expect = Expect.FORBIDDEN, desc = "Unexpected state")
 @State
 public class ICMapComputeJCStress {
@@ -42,7 +42,7 @@ public class ICMapComputeJCStress {
     @Actor
     public void actor1(){
         // Put an initial value in the map first
-        put.run(map);
+        //put.run(map);
         // First compute operation
         compute.run(map);
     }
@@ -50,13 +50,13 @@ public class ICMapComputeJCStress {
     @Actor
     public void actor2(){
         // Second compute operation
-        compute.run(map);
+        //compute.run(map);
         // Put a value in the map
         put.run(map);
     }
 
     @Arbiter
-    public void arbiter(IIZ_Result r) {
+    public void arbiter(IZ_Result r) {
         
         //Sequence 1 
         map_seq1.put("key", putValue);
@@ -72,14 +72,14 @@ public class ICMapComputeJCStress {
 
         // Record outcomes
         // Check if the key exists
-        r.r1 = map.containsKey("key") ? 1 : 0; 
+        //r.r1 = map.containsKey("key") ? 1 : 0; 
         
         // Check if the value is either value1 or value2
-        if(map.get("key").equals(putValue))             r.r2 = putValue;
-        else if(map.get("key").equals(computeValue))    r.r2 = computeValue;
-        else                                                r.r2 = -1;
+        if(map.get("key").equals(putValue))             r.r1 = putValue;
+        else if(map.get("key").equals(computeValue))    r.r1 = computeValue;
+        else                                                r.r1 = -1;
 
         // Assert linearizability
-        r.r3 = (seq1 || seq2) ? true : false;
+        r.r2 = (seq1 || seq2) ? true : false;
     }
 }

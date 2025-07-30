@@ -46,6 +46,13 @@ public class InstrumentedConcurrentMap<K, V> {
         return newValue;
     }
 
+    public V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> mappingFunction) {
+        V oldValue = map.get(key);
+        V newValue = map.computeIfPresent(key, mappingFunction);
+        record("computeIfPresent", key, oldValue, newValue);
+        return newValue;
+    }
+
 
 
     public boolean containsKey(K key) {
