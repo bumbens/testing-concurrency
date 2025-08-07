@@ -14,9 +14,9 @@ import org.openjdk.jcstress.infra.runners.VoidThread;
 import org.openjdk.jcstress.infra.runners.LongThread;
 import org.openjdk.jcstress.infra.runners.CounterThread;
 import thesis.JCStress.ICMapJCStressTest;
-import org.openjdk.jcstress.infra.results.IZ_Result;
+import org.openjdk.jcstress.infra.results.Z_Result;
 
-public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
+public final class ICMapJCStressTest_jcstress extends Runner<Z_Result> {
 
     volatile WorkerSync workerSync;
 
@@ -25,7 +25,7 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
     }
 
     @Override
-    public void sanityCheck(Counter<IZ_Result> counter) throws Throwable {
+    public void sanityCheck(Counter<Z_Result> counter) throws Throwable {
         jcstress_sanityCheck_API(counter);
         jcstress_sanityCheck_Resource(counter);
     }
@@ -33,9 +33,9 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
     private static class JcstressThread_APICheck_actor1 extends VoidThread {
         ICMapJCStressTest t;
         ICMapJCStressTest s;
-        IZ_Result r;
+        Z_Result r;
 
-        public JcstressThread_APICheck_actor1(ICMapJCStressTest t, ICMapJCStressTest s, IZ_Result r) {
+        public JcstressThread_APICheck_actor1(ICMapJCStressTest t, ICMapJCStressTest s, Z_Result r) {
             super("JcstressThread_APICheck_actor1");
             this.t = t;
             this.s = s;
@@ -56,9 +56,9 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
     private static class JcstressThread_APICheck_actor2 extends VoidThread {
         ICMapJCStressTest t;
         ICMapJCStressTest s;
-        IZ_Result r;
+        Z_Result r;
 
-        public JcstressThread_APICheck_actor2(ICMapJCStressTest t, ICMapJCStressTest s, IZ_Result r) {
+        public JcstressThread_APICheck_actor2(ICMapJCStressTest t, ICMapJCStressTest s, Z_Result r) {
             super("JcstressThread_APICheck_actor2");
             this.t = t;
             this.s = s;
@@ -79,9 +79,9 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
     private static class JcstressThread_APICheck_actor3 extends VoidThread {
         ICMapJCStressTest t;
         ICMapJCStressTest s;
-        IZ_Result r;
+        Z_Result r;
 
-        public JcstressThread_APICheck_actor3(ICMapJCStressTest t, ICMapJCStressTest s, IZ_Result r) {
+        public JcstressThread_APICheck_actor3(ICMapJCStressTest t, ICMapJCStressTest s, Z_Result r) {
             super("JcstressThread_APICheck_actor3");
             this.t = t;
             this.s = s;
@@ -99,9 +99,9 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
         }
     }
 
-    private void jcstress_sanityCheck_API(Counter<IZ_Result> counter) throws Throwable {
+    private void jcstress_sanityCheck_API(Counter<Z_Result> counter) throws Throwable {
         final ICMapJCStressTest s = new ICMapJCStressTest();
-        final IZ_Result r = new IZ_Result();
+        final Z_Result r = new Z_Result();
         VoidThread a0 = new JcstressThread_APICheck_actor1(null, s, r);
         VoidThread a1 = new JcstressThread_APICheck_actor2(null, s, r);
         VoidThread a2 = new JcstressThread_APICheck_actor3(null, s, r);
@@ -129,10 +129,10 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
 
     private static class JcstressThread_ResourceCheck_actor1 extends LongThread {
         ICMapJCStressTest[] ss;
-        IZ_Result[] rs;
+        Z_Result[] rs;
         int size;
 
-        public JcstressThread_ResourceCheck_actor1(ICMapJCStressTest[] ss, IZ_Result[] rs, int size) {
+        public JcstressThread_ResourceCheck_actor1(ICMapJCStressTest[] ss, Z_Result[] rs, int size) {
             super("JcstressThread_ResourceCheck_actor1");
             this.ss = ss;
             this.rs = rs;
@@ -146,7 +146,7 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
             return a2 - a1;
         }
 
-        private void jcstress_check_actor1(ICMapJCStressTest[] ls, IZ_Result[] lr, int size) {
+        private void jcstress_check_actor1(ICMapJCStressTest[] ls, Z_Result[] lr, int size) {
             for (int c = 0; c < size; c++) {
                 ls[c].actor1();
             }
@@ -160,10 +160,10 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
 
     private static class JcstressThread_ResourceCheck_actor2 extends LongThread {
         ICMapJCStressTest[] ss;
-        IZ_Result[] rs;
+        Z_Result[] rs;
         int size;
 
-        public JcstressThread_ResourceCheck_actor2(ICMapJCStressTest[] ss, IZ_Result[] rs, int size) {
+        public JcstressThread_ResourceCheck_actor2(ICMapJCStressTest[] ss, Z_Result[] rs, int size) {
             super("JcstressThread_ResourceCheck_actor2");
             this.ss = ss;
             this.rs = rs;
@@ -177,7 +177,7 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
             return a2 - a1;
         }
 
-        private void jcstress_check_actor2(ICMapJCStressTest[] ls, IZ_Result[] lr, int size) {
+        private void jcstress_check_actor2(ICMapJCStressTest[] ls, Z_Result[] lr, int size) {
             for (int c = 0; c < size; c++) {
                 ls[c].actor2();
             }
@@ -191,10 +191,10 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
 
     private static class JcstressThread_ResourceCheck_actor3 extends LongThread {
         ICMapJCStressTest[] ss;
-        IZ_Result[] rs;
+        Z_Result[] rs;
         int size;
 
-        public JcstressThread_ResourceCheck_actor3(ICMapJCStressTest[] ss, IZ_Result[] rs, int size) {
+        public JcstressThread_ResourceCheck_actor3(ICMapJCStressTest[] ss, Z_Result[] rs, int size) {
             super("JcstressThread_ResourceCheck_actor3");
             this.ss = ss;
             this.rs = rs;
@@ -208,7 +208,7 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
             return a2 - a1;
         }
 
-        private void jcstress_check_actor3(ICMapJCStressTest[] ls, IZ_Result[] lr, int size) {
+        private void jcstress_check_actor3(ICMapJCStressTest[] ls, Z_Result[] lr, int size) {
             for (int c = 0; c < size; c++) {
                 ls[c].actor3();
             }
@@ -221,9 +221,9 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
     }
 
     private static class TestResourceEstimator implements ResourceEstimator {
-        final Counter<IZ_Result> counter;
+        final Counter<Z_Result> counter;
 
-        public TestResourceEstimator(Counter<IZ_Result> counter) {
+        public TestResourceEstimator(Counter<Z_Result> counter) {
             this.counter = counter;
         }
 
@@ -231,10 +231,10 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
             long time1 = System.nanoTime();
             long alloc1 = AllocProfileSupport.getAllocatedBytes();
             ICMapJCStressTest[] ls = new ICMapJCStressTest[size];
-            IZ_Result[] lr = new IZ_Result[size];
+            Z_Result[] lr = new Z_Result[size];
             for (int c = 0; c < size; c++) {
                 ICMapJCStressTest s = new ICMapJCStressTest();
-                IZ_Result r = new IZ_Result();
+                Z_Result r = new Z_Result();
                 lr[c] = r;
                 ls[c] = s;
             }
@@ -275,18 +275,18 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
         }
     }
 
-    private void jcstress_sanityCheck_Resource(Counter<IZ_Result> counter) throws Throwable {
+    private void jcstress_sanityCheck_Resource(Counter<Z_Result> counter) throws Throwable {
         config.adjustStrideCount(new TestResourceEstimator(counter));
     }
 
     @Override
-    public ArrayList<CounterThread<IZ_Result>> internalRun() {
+    public ArrayList<CounterThread<Z_Result>> internalRun() {
         int len = config.strideSize * config.strideCount;
         ICMapJCStressTest[] ls = new ICMapJCStressTest[len];
-        IZ_Result[] lr = new IZ_Result[len];
+        Z_Result[] lr = new Z_Result[len];
         for (int c = 0; c < len; c++) {
             ls[c] = new ICMapJCStressTest();
-            lr[c] = new IZ_Result();
+            lr[c] = new Z_Result();
         }
         workerSync = new WorkerSync(false, 3, config.spinLoopStyle);
 
@@ -300,12 +300,12 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
             }
         }
 
-        ArrayList<CounterThread<IZ_Result>> threads = new ArrayList<>(3);
+        ArrayList<CounterThread<Z_Result>> threads = new ArrayList<>(3);
         threads.add(new JcstressThread_actor1(ls, lr, null));
         threads.add(new JcstressThread_actor2(ls, lr, null));
         threads.add(new JcstressThread_actor3(ls, lr, null));
 
-        for (CounterThread<IZ_Result> t : threads) {
+        for (CounterThread<Z_Result> t : threads) {
             t.start();
         }
 
@@ -321,51 +321,50 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
         return threads;
     }
 
-    public static void jcstress_ni_consume_final(Counter<IZ_Result> cnt, ICMapJCStressTest[] ls, IZ_Result[] lr, ICMapJCStressTest test, int len, int a) {
+    public static void jcstress_ni_consume_final(Counter<Z_Result> cnt, ICMapJCStressTest[] ls, Z_Result[] lr, ICMapJCStressTest test, int len, int a) {
         int left = a * len / 3;
         int right = (a + 1) * len / 3;
         for (int c = left; c < right; c++) {
-            IZ_Result r = lr[c];
+            Z_Result r = lr[c];
             ICMapJCStressTest s = ls[c];
             s.arbiter(r);
             cnt.record(r, 1);
         }
     }
 
-    public static void jcstress_consume_reinit(Counter<IZ_Result> cnt, ICMapJCStressTest[] ls, IZ_Result[] lr, ICMapJCStressTest test, int len, int a) {
+    public static void jcstress_consume_reinit(Counter<Z_Result> cnt, ICMapJCStressTest[] ls, Z_Result[] lr, ICMapJCStressTest test, int len, int a) {
         int left = a * len / 3;
         int right = (a + 1) * len / 3;
         for (int c = left; c < right; c++) {
-            IZ_Result r = lr[c];
+            Z_Result r = lr[c];
             ICMapJCStressTest s = ls[c];
             s.arbiter(r);
             ls[c] = new ICMapJCStressTest();
             cnt.record(r, 1);
-            r.r1 = 0;
-            r.r2 = false;
+            r.r1 = false;
         }
     }
 
-    public class JcstressThread_actor1 extends CounterThread<IZ_Result> {
+    public class JcstressThread_actor1 extends CounterThread<Z_Result> {
         ICMapJCStressTest[] ss;
-        IZ_Result[] rs;
+        Z_Result[] rs;
         ICMapJCStressTest test;
 
-        public JcstressThread_actor1(ICMapJCStressTest[] ss, IZ_Result[] rs, ICMapJCStressTest test) {
+        public JcstressThread_actor1(ICMapJCStressTest[] ss, Z_Result[] rs, ICMapJCStressTest test) {
             super("JcstressThread_actor1");
             this.ss = ss;
             this.rs = rs;
             this.test = test;
         }
 
-        public Counter<IZ_Result> internalRun() {
+        public Counter<Z_Result> internalRun() {
             return jcstress_iteration_actor1();
         }
 
-        private Counter<IZ_Result> jcstress_iteration_actor1() {
+        private Counter<Z_Result> jcstress_iteration_actor1() {
             int len = config.strideSize * config.strideCount;
             int stride = config.strideSize;
-            Counter<IZ_Result> counter = new Counter<>();
+            Counter<Z_Result> counter = new Counter<>();
             if (config.localAffinity) AffinitySupport.bind(config.localAffinityMap[0]);
             while (true) {
                 WorkerSync sync = workerSync;
@@ -390,7 +389,7 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
 
         private void jcstress_stride_actor1(int start, int end) {
             ICMapJCStressTest[] ls = ss;
-            IZ_Result[] lr = rs;
+            Z_Result[] lr = rs;
             for (int c = start; c < end; c++) {
                 ICMapJCStressTest s = ls[c];
                 s.actor1();
@@ -404,26 +403,26 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
         }
     }
 
-    public class JcstressThread_actor2 extends CounterThread<IZ_Result> {
+    public class JcstressThread_actor2 extends CounterThread<Z_Result> {
         ICMapJCStressTest[] ss;
-        IZ_Result[] rs;
+        Z_Result[] rs;
         ICMapJCStressTest test;
 
-        public JcstressThread_actor2(ICMapJCStressTest[] ss, IZ_Result[] rs, ICMapJCStressTest test) {
+        public JcstressThread_actor2(ICMapJCStressTest[] ss, Z_Result[] rs, ICMapJCStressTest test) {
             super("JcstressThread_actor2");
             this.ss = ss;
             this.rs = rs;
             this.test = test;
         }
 
-        public Counter<IZ_Result> internalRun() {
+        public Counter<Z_Result> internalRun() {
             return jcstress_iteration_actor2();
         }
 
-        private Counter<IZ_Result> jcstress_iteration_actor2() {
+        private Counter<Z_Result> jcstress_iteration_actor2() {
             int len = config.strideSize * config.strideCount;
             int stride = config.strideSize;
-            Counter<IZ_Result> counter = new Counter<>();
+            Counter<Z_Result> counter = new Counter<>();
             if (config.localAffinity) AffinitySupport.bind(config.localAffinityMap[1]);
             while (true) {
                 WorkerSync sync = workerSync;
@@ -448,7 +447,7 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
 
         private void jcstress_stride_actor2(int start, int end) {
             ICMapJCStressTest[] ls = ss;
-            IZ_Result[] lr = rs;
+            Z_Result[] lr = rs;
             for (int c = start; c < end; c++) {
                 ICMapJCStressTest s = ls[c];
                 s.actor2();
@@ -462,26 +461,26 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
         }
     }
 
-    public class JcstressThread_actor3 extends CounterThread<IZ_Result> {
+    public class JcstressThread_actor3 extends CounterThread<Z_Result> {
         ICMapJCStressTest[] ss;
-        IZ_Result[] rs;
+        Z_Result[] rs;
         ICMapJCStressTest test;
 
-        public JcstressThread_actor3(ICMapJCStressTest[] ss, IZ_Result[] rs, ICMapJCStressTest test) {
+        public JcstressThread_actor3(ICMapJCStressTest[] ss, Z_Result[] rs, ICMapJCStressTest test) {
             super("JcstressThread_actor3");
             this.ss = ss;
             this.rs = rs;
             this.test = test;
         }
 
-        public Counter<IZ_Result> internalRun() {
+        public Counter<Z_Result> internalRun() {
             return jcstress_iteration_actor3();
         }
 
-        private Counter<IZ_Result> jcstress_iteration_actor3() {
+        private Counter<Z_Result> jcstress_iteration_actor3() {
             int len = config.strideSize * config.strideCount;
             int stride = config.strideSize;
-            Counter<IZ_Result> counter = new Counter<>();
+            Counter<Z_Result> counter = new Counter<>();
             if (config.localAffinity) AffinitySupport.bind(config.localAffinityMap[2]);
             while (true) {
                 WorkerSync sync = workerSync;
@@ -506,7 +505,7 @@ public final class ICMapJCStressTest_jcstress extends Runner<IZ_Result> {
 
         private void jcstress_stride_actor3(int start, int end) {
             ICMapJCStressTest[] ls = ss;
-            IZ_Result[] lr = rs;
+            Z_Result[] lr = rs;
             for (int c = start; c < end; c++) {
                 ICMapJCStressTest s = ls[c];
                 s.actor3();

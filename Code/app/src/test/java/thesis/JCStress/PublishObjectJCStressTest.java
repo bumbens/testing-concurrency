@@ -9,6 +9,8 @@ import org.openjdk.jcstress.infra.results.I_Result;
 
 import thesis.PublishObject;
 
+//if it could be safely published 
+//more generic way to do this 
 @JCStressTest
 @Outcome(id = "1", expect = Expect.ACCEPTABLE, desc = "Safe publication, write-before-read")
 @Outcome(id = "-1", expect = Expect.ACCEPTABLE, desc = "Safe publication, read-before-write")
@@ -17,11 +19,12 @@ import thesis.PublishObject;
 public class PublishObjectJCStressTest {
 
 
-    volatile PublishObject publishObject;
+    PublishObject publishObject = new PublishObject();
 
     @Actor
     public void writer() {
-        publishObject = new PublishObject();
+        publishObject.getValue();
+        PublishObject p1 = new PublishObject();
     }
 
     @Actor

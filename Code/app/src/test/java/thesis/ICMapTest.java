@@ -136,7 +136,7 @@ public class ICMapTest {
     }
 
     @Test
-    public void testCarthesian() throws InterruptedException{
+    public void testCartesian() throws InterruptedException{
         int iterations = 5;
         final Object key1 = "key1";
         final Object key2 = "key2";
@@ -160,18 +160,8 @@ public class ICMapTest {
             Thread t5 = new Thread(() -> { map.compute(key1, (k, v) -> valueCompute); }, "Thread-5");
             Thread t6 = new Thread(() -> { map.compute(key2, (k, v) -> valueCompute); }, "Thread-6");
             
-                t1.start();
-                t2.start();
-                t3.start();
-                t4.start();
-                t5.start();
-                t6.start();
-                t1.join();
-                t2.join();
-                t3.join();
-                t4.join();
-                t5.join();
-                t6.join();
+                t1.start(); t2.start(); t3.start(); t4.start(); t5.start(); t6.start();
+                t1.join(); t2.join(); t3.join(); t4.join(); t5.join(); t6.join();
                 }
 
             Object actualValue1 = map.get(key1);
@@ -223,7 +213,7 @@ public class ICMapTest {
         Objects.equals(actualValue2, lastWrittenValue2));
 
     // Save full state to file for inspection
-    ToFile.saveToFile(map, "resultCarthesian.html", actualValue1 + " | " + actualValue2);
+    ToFile.saveToFile(map, "resultCartesian.html", actualValue1 + " | " + actualValue2);
         
         }
         

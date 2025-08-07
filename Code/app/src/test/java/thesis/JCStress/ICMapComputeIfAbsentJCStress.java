@@ -29,7 +29,7 @@ import thesis.Operations.Put;
 //      - all possible sequences of operations are tested
 //      - all possible interleavings of operations are tested
 //      - no FORBIDDEN outcomes observed
-//      - different hardware architectures and JVMs are tested
+//      - different hardware architectures and JVMs are tested 
 
 
 // EQUALITY FOR OBJECTS!!!!!!!!!!

@@ -1,7 +1,7 @@
 package thesis;
 
 public class PublishObject {
-    volatile int value;
+    int value;
     public PublishObject() {
         value = 1;
     }

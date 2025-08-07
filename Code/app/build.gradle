@@ -50,7 +50,7 @@ task jcstress(type: JavaExec) {
     dependsOn testClasses
     main = 'org.openjdk.jcstress.Main'
     classpath = files(sourceSets.test.output.classesDirs) + sourceSets.test.runtimeClasspath
-    args = ['-v']
+    args = ['v']
 }
 
 application {

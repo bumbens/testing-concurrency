@@ -263,7 +263,7 @@ public final class PublishObjectJCStressTest_jcstress extends Runner<I_Result> {
         for (int c = left; c < right; c++) {
             I_Result r = lr[c];
             PublishObjectJCStressTest s = ls[c];
-            s.publishObject = null;
+            ls[c] = new PublishObjectJCStressTest();
             cnt.record(r, 1);
             r.r1 = 0;
         }
