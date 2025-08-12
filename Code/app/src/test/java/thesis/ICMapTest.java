@@ -13,7 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import thesis.ConcurrentHashMap.ObservableConcurrentMap;
-import thesis.ConcurrentHashMap.ToFile;
+import thesis.ConcurrentHashMap.ToFileHM;
 import thesis.ConcurrentHashMap.OperationsHM.Get;
 import thesis.ConcurrentHashMap.OperationsHM.OperationHM;
 import thesis.ConcurrentHashMap.OperationsHM.Put;
@@ -134,7 +134,7 @@ public class ICMapTest {
         assertTrue(actualValue.equals(100) || actualValue.equals(200));
         //assertNotEquals(200, actualKey);
 
-        ToFile.saveToFile(map, "result.html", actualValue);
+        ToFileHM.saveToFile(map, "result.html", actualValue);
     }
 
     @Test
@@ -215,7 +215,7 @@ public class ICMapTest {
         Objects.equals(actualValue2, lastWrittenValue2));
 
     // Save full state to file for inspection
-    ToFile.saveToFile(map, "resultCartesian.html", actualValue1 + " | " + actualValue2);
+    ToFileHM.saveToFile(map, "resultCartesian.html", actualValue1 + " | " + actualValue2);
         
         }
         

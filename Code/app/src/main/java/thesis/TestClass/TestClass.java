@@ -1,15 +1,21 @@
 package thesis.TestClass;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import thesis.TestClass.Operations_TestClass.OperationTC;
+
+// T - same type consistenly used
+// ? - wildcard
 public class TestClass<T> {
-    private final List<T> list;
+    private final List<T> list = new ArrayList<>();
+    private final List<OperationTC<T>> history = Collections.synchronizedList(new ArrayList<>());
+    private final AtomicInteger opCounter = new AtomicInteger();
 
-    public TestClass(){
-        this.list = new ArrayList<>();
-    }
+    public TestClass(){}
 
     public TestClass(TestClass<T> snapshot){
         this();
@@ -18,12 +24,36 @@ public class TestClass<T> {
         }
     }
 
+    public void record(String opType, T value, int sizeBefore, int sizeAfter) {
+        history.add(new OperationTC<>(
+            Thread.currentThread().getName(), 
+            opType, value, sizeBefore, sizeAfter, opCounter.getAndIncrement()
+            ));
+    }
+
+    public List<OperationTC<T>> getHistory(){
+        return new ArrayList<>(history);
+    }
+
     public void add(T value){
+        int sizeBefore = list.size();
         list.add(value);
+        int sizeAfter = list.size();
+        record("add", value, sizeBefore, sizeAfter);
     }
 
     public void remove(T value){
+        int sizeBefore = list.size();
         list.remove(value);
+        int sizeAfter = list.size();
+        record("remove", value, sizeBefore, sizeAfter);
+
+    }
+
+    public T get(int index){
+        int size = list.size();
+        record("get", null, size, size);
+        return list.get(index);
     }
 
     public boolean contains(T value){
