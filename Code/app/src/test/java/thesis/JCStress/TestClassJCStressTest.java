@@ -9,7 +9,7 @@ import org.openjdk.jcstress.annotations.Outcome;
 import org.openjdk.jcstress.annotations.State;
 import org.openjdk.jcstress.infra.results.Z_Result;
 
-import thesis.TestClass;
+import thesis.TestClass.TestClass;
 
 @JCStressTest
 @Outcome(id = "true", expect = Expect.ACCEPTABLE, desc = "All OK")
