@@ -17,6 +17,7 @@ import thesis.ConcurrentHashMap.OperationsHM.Compute;
 import thesis.ConcurrentHashMap.OperationsHM.MapOperation;
 import thesis.ConcurrentHashMap.OperationsHM.Put;
 
+
 @JCStressTest
 @Outcome(id = "100, true", expect = Expect.ACCEPTABLE, desc = "All OK (Key present, Value equal to value1 of value2, Linearizability OK)")
 @Outcome(id = "200, true", expect = Expect.ACCEPTABLE, desc = "All OK (Key present, Value equal to value1 of value2, Linearizability OK)")

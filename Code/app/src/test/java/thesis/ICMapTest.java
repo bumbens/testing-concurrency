@@ -7,15 +7,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import thesis.Operations.Get;
-import thesis.Operations.Operation;
-import thesis.Operations.Put;
-import thesis.Operations.Remove;
+import thesis.ConcurrentHashMap.ObservableConcurrentMap;
+import thesis.ConcurrentHashMap.ToFile;
+import thesis.ConcurrentHashMap.OperationsHM.Get;
+import thesis.ConcurrentHashMap.OperationsHM.OperationHM;
+import thesis.ConcurrentHashMap.OperationsHM.Put;
+import thesis.ConcurrentHashMap.OperationsHM.Remove;
 
 
 //what kind of bugs could I produce; what kind of changes inside the code could be made to provoke bugs; how to create concurrency bugs in java code 
@@ -142,7 +144,7 @@ public class ICMapTest {
         final Object key2 = "key2";
         final Object valuePut = "valuePut";
         final Object valueCompute = "valueCompute";
-        List<Operation<Object, Object>> history;
+        List<OperationHM<Object, Object>> history;
         
 
         for (int i = 0; i < iterations; i++){
@@ -177,7 +179,7 @@ public class ICMapTest {
     // Track the last opCounter for key1
     long lastOpCounter1 = -1;
     // Iterate through the history to find the latest write for key1
-    for (Operation<Object, Object> op : history) {
+    for (OperationHM<Object, Object> op : history) {
         // Skip operations that do not match key1
         if (!op.getKey().equals(key1)) continue;
         // Check if the operation is a write operation
@@ -196,7 +198,7 @@ public class ICMapTest {
     // Similar logic as above for key2
     Object lastWrittenValue2 = null;
     long lastOpCounter2 = -1;
-    for (Operation<Object, Object> op : history) {
+    for (OperationHM<Object, Object> op : history) {
         if (!op.getKey().equals(key2)) continue;
         if (op.getOpType().equals("put") || op.getOpType().equals("compute") || op.getOpType().equals("remove")) {
             if (op.getOpCounter() > lastOpCounter2) {
