@@ -1,6 +1,9 @@
 package thesis.JCStress.TestClass;
 
 
+import java.util.List;
+import java.util.Set;
+
 import org.openjdk.jcstress.annotations.Actor;
 import org.openjdk.jcstress.annotations.Arbiter;
 import org.openjdk.jcstress.annotations.Expect;
@@ -9,7 +12,9 @@ import org.openjdk.jcstress.annotations.Outcome;
 import org.openjdk.jcstress.annotations.State;
 import org.openjdk.jcstress.infra.results.Z_Result;
 
+import thesis.TestClass.OperationTypes;
 import thesis.TestClass.TestClass;
+import thesis.TestClass.ValidPermutations;
 
 @JCStressTest
 @Outcome(id = "true", expect = Expect.ACCEPTABLE, desc = "All OK")
@@ -17,6 +22,13 @@ import thesis.TestClass.TestClass;
 @State
 public class TestClassJCStressTest {
     
+    static final Set<TestClass<String>> Expected = ValidPermutations.permutations(
+        List.of(
+            List.of(OperationTypes.add("v1"), OperationTypes.add("v2")),
+            List.of(OperationTypes.remove("v1")),
+            List.of(OperationTypes.snapshot())
+        ), 100);
+
     TestClass<String> list = new TestClass<>();
     private volatile TestClass<String> observed;
     String[] addValue = {"v1", "v2"};
@@ -41,38 +53,8 @@ public class TestClassJCStressTest {
 
     @Arbiter
     public void arbiter(Z_Result r){
-    
-    TestClass<String> seq1 = new TestClass<>();
-    // add v1 -> add v2 -> SNAPSHOT -> remove v1
-    // OR
-    // remove v1 -> add v1 -> add v2 -> SNAPSHOT
-    seq1.add("v1");
-    seq1.add("v2");
 
-    TestClass<String> seq2 = new TestClass<>();
-    // add v1 -> add v2 -> remove v1 -> SNAPSHOT
-    // OR
-    // add v1 -> remove v1 -> add v2 -> SNAPSHOT
-    seq2.add("v2");
-
-    TestClass<String> seq3 = new TestClass<>();
-    // add v1 -> SNAPSHOT -> remove v1 -> add v2
-    seq3.add("v1");
-
-    TestClass<String> seq4 = new TestClass<>();
-    // add v1 -> remove v1 -> SNAPSHOT -> add v2
-    // OR
-    // remove v1 -> SNAPSHOT -> add v1 -> add v2
-
-
-
-    boolean isValid =
-        observed.equals(seq1)
-        || observed.equals(seq2)
-        || observed.equals(seq3)
-        || observed.equals(seq4);
-
-    r.r1 = isValid;
+    r.r1 = Expected.contains(observed);
         
 
     }

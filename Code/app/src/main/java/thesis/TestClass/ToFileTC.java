@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import thesis.TestClass.Operations_TestClass.OperationTC;
+import thesis.TestClass.OperationsTC.OperationTC;
 
 public class ToFileTC {
     public static void saveToFile(TestClass<?> list, String filePath){

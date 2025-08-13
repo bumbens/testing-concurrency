@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import thesis.TestClass.Operations_TestClass.OperationTC;
+import thesis.TestClass.OperationsTC.OperationTC;
 
 // T - same type consistenly used
 // ? - wildcard
 public class TestClass<T> {
-    private final List<T> list = new ArrayList<>();
-    private final List<OperationTC<T>> history = Collections.synchronizedList(new ArrayList<>());
-    private final AtomicInteger opCounter = new AtomicInteger();
+    private List<T> list = new ArrayList<>();
+    private List<OperationTC<T>> history = Collections.synchronizedList(new ArrayList<>());
+    private AtomicInteger opCounter = new AtomicInteger();
 
     public TestClass(){}
 
@@ -24,7 +24,7 @@ public class TestClass<T> {
         }
     }
 
-    public void record(String opType, T value, int sizeBefore, int sizeAfter) {
+    private void record(String opType, T value, int sizeBefore, int sizeAfter) {
         history.add(new OperationTC<>(
             Thread.currentThread().getName(), 
             opType, value, sizeBefore, sizeAfter, opCounter.getAndIncrement()
@@ -35,14 +35,14 @@ public class TestClass<T> {
         return new ArrayList<>(history);
     }
 
-    public void add(T value){
+    public synchronized void add(T value){
         int sizeBefore = list.size();
         list.add(value);
         int sizeAfter = list.size();
         record("add", value, sizeBefore, sizeAfter);
     }
 
-    public void remove(T value){
+    public synchronized void remove(T value){
         int sizeBefore = list.size();
         list.remove(value);
         int sizeAfter = list.size();
@@ -62,6 +62,16 @@ public class TestClass<T> {
 
     public int size(){
         return list.size();
+    }
+
+    @Override
+    public String toString(){
+        return list.toString();
+    }
+
+    @Override
+    public synchronized int hashCode() {
+        return list.hashCode();
     }
 
     @Override
