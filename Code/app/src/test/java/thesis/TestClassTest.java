@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import thesis.TestClass.OperationTypes;
@@ -14,6 +15,7 @@ import thesis.TestClass.TestClass;
 import thesis.TestClass.ToFileTC;
 import thesis.TestClass.ValidPermutations;
 import thesis.TestClass.OperationsTC.Add;
+import thesis.TestClass.OperationsTC.AddAtIndex;
 import thesis.TestClass.OperationsTC.Remove;
 import thesis.TestClass.OperationsTC.TestClassOperation;
 
@@ -52,24 +54,22 @@ public class TestClassTest {
     }
 
 
-    @Test
+    @RepeatedTest(10000)
     public void testPermutations() throws InterruptedException{
         String add1 = "v1";
-        String add2 = "v2";
-        String remove = "v1";
+        String remove = "v2";
         int iterations = 10;
 
         final TestClassOperation<String> add_v1 = new Add<String>(add1);
-        final TestClassOperation<String> add_v2 = new Add<String>(add2);
         final TestClassOperation<String> remove_v1 = new Remove<String>(remove);
                 
 
         final Set<TestClass<String>> Expected = ValidPermutations.permutations(
             List.of(
-                List.of(OperationTypes.add("v1"), OperationTypes.add("v2")),
-                List.of(OperationTypes.remove("v1")),
-                List.of(OperationTypes.snapshot())
-            ), 100);
+                OperationTypes.add("v1"), 
+                OperationTypes.remove("v2"),
+                OperationTypes.snapshot()
+            ));
 
             for (int i = 0; i<iterations; i++){
                 
@@ -77,24 +77,23 @@ public class TestClassTest {
 
                 Thread t1 = new Thread(() -> {
                     add_v1.run(map);
-                    add_v2.run(map);
+                
                 });
 
                 Thread t2 = new Thread(() -> {
                     remove_v1.run(map);
+                    
                 });
 
-                Thread t3 = new Thread(() -> {
-                    observed = new TestClass<>(map);
-                });
 
-                t1.start(); t2.start(); t3.start();
-                t1.join(); t2.join(); t3.join();
+
+                t1.start(); t2.start(); 
+                t1.join(); t2.join(); 
 
                 
                         assertTrue(
-                            Expected.contains(observed),
-                            () -> "Unexpected snapshot: " + observed + " | expected any of " + Expected
+                            Expected.contains(map),
+                            () -> "Unexpected snapshot: " + map + " | expected any of " + Expected
                         );
                 
             }

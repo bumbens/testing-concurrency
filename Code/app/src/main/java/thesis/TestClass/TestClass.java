@@ -50,13 +50,25 @@ public class TestClass<T> {
 
     }
 
-    public T get(int index){
+    public synchronized T get(int index){
         int size = list.size();
         record("get", null, size, size);
         return list.get(index);
     }
 
-    public boolean contains(T value){
+    public synchronized T add(int index, T value) {
+        int before = list.size();
+        if (index < 0 || index > before) {
+            throw new IndexOutOfBoundsException(
+                "Index " + index + " out of bounds for size " + before);
+        }
+        list.add(index, value);
+        record("addAtIndex", value, before, list.size());
+        return value;
+    }
+
+
+    public synchronized boolean contains(T value){
         return list.contains(value);
     }
 
@@ -75,7 +87,7 @@ public class TestClass<T> {
     }
 
     @Override
-    public boolean equals(Object obj){
+    public synchronized boolean equals(Object obj){
         // Shortcut - if both equal return true 
         if(this == obj) return true;
         // Return false if null or not same class
