@@ -8,12 +8,17 @@ public class TestClassMain {
 
     public <T> String testPermutations(){
 
-        final Set<TestClass<String>> Expected = ValidPermutations.permutations(
+        final Set<TestClass<String>> Expected = VPNew.permutations(
             List.of(
                 OperationTypes.add("v1"),
                 OperationTypes.add("v2"),
                 OperationTypes.add("v3"),
-                OperationTypes.remove("v2"),
+                OperationTypes.add("v4"),
+                OperationTypes.add("v5"),
+                OperationTypes.add("v6"),
+                OperationTypes.add("v7"),
+                OperationTypes.add("v8"),
+                OperationTypes.add("v9"),
                 OperationTypes.snapshot()
             ));
 

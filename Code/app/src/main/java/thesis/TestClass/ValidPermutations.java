@@ -56,7 +56,7 @@ public class ValidPermutations<T> {
                 // Get the operation corresponding to the current index
                 OperationTypes<T> operations = actors.get(opId.get(j));
                 
-                boolean valid = true;
+                
                 // Perform the operation on the current state of TestClass
                 if(operations.type == OperationTypes.Type.ADD ) {
                         currentState.add(operations.value);
@@ -68,7 +68,7 @@ public class ValidPermutations<T> {
                         int index = operations.getIndex();
                         int size = currentState.size();
                         if (index < 0 || index > size) { 
-                                valid = false;
+                                continue;
                         }
                         else {
                                 currentState.add(index, operations.value);

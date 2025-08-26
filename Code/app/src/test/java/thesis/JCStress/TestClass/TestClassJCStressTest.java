@@ -15,6 +15,7 @@ import org.openjdk.jcstress.infra.results.Z_Result;
 
 import thesis.TestClass.OperationTypes;
 import thesis.TestClass.TestClass;
+import thesis.TestClass.VPNew;
 import thesis.TestClass.ValidPermutations;
 import thesis.TestClass.OperationsTC.Add;
 import thesis.TestClass.OperationsTC.Remove;
@@ -27,18 +28,18 @@ import thesis.TestClass.OperationsTC.TestClassOperation;
 @State
 public class TestClassJCStressTest {
     
-    static final Set<TestClass<String>> Expected = ValidPermutations.permutations(
+        static final String addV1 = "v1";
+        static final String addV2 = "v2";
+        static final String removeVal = "v2";
+
+    static final Set<TestClass<String>> Expected = VPNew.permutations(
         List.of(
-            OperationTypes.add("v1"),
-            OperationTypes.add("v2"),
-            OperationTypes.remove("v2"),
+            OperationTypes.add(addV1),
+            OperationTypes.remove(removeVal),
             OperationTypes.snapshot()
         ));
-        String addV1 = "v1";
-        String addV2 = "v2";
-        String removeVal = "v2";
+
         final TestClassOperation<String> add_v1 = new Add<String>(addV1);
-        final TestClassOperation<String> add_v2 = new Add<String>(addV2);
         final TestClassOperation<String> remove_v2 = new Remove<String>(removeVal);
     TestClass<String> list = new TestClass<>();
     TestClass<String> observed;
@@ -51,7 +52,7 @@ public class TestClassJCStressTest {
 
     @Actor
     public void actor2(){
-        list.add(addV2);
+        list.remove(removeVal);
     }
 
     //Thread safety - theory and how is it related? 
@@ -59,11 +60,6 @@ public class TestClassJCStressTest {
     //Examples
 
     //thread scheduler - running man times
-    @Actor
-    public void actor3(){
-        list.remove(removeVal);
-        
-    }
 
 
     @Arbiter
