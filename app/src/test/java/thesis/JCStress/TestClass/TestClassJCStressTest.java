@@ -1,10 +1,9 @@
 package thesis.JCStress.TestClass;
 
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.jupiter.api.Test;
 import org.openjdk.jcstress.annotations.Actor;
 import org.openjdk.jcstress.annotations.Arbiter;
 import org.openjdk.jcstress.annotations.Expect;
@@ -13,13 +12,9 @@ import org.openjdk.jcstress.annotations.Outcome;
 import org.openjdk.jcstress.annotations.State;
 import org.openjdk.jcstress.infra.results.Z_Result;
 
-import thesis.TestClass.OperationTypes;
-import thesis.TestClass.TestClass;
-import thesis.TestClass.VPNew;
-import thesis.TestClass.ValidPermutations;
-import thesis.TestClass.OperationsTC.Add;
-import thesis.TestClass.OperationsTC.Remove;
-import thesis.TestClass.OperationsTC.TestClassOperation;
+import thesis.ValidPermutations;
+import thesis.Collections.Operations;
+
 
 //force bug or sth
 @JCStressTest
@@ -28,46 +23,62 @@ import thesis.TestClass.OperationsTC.TestClassOperation;
 @State
 public class TestClassJCStressTest {
     
-        static final String addV1 = "v1";
-        static final String addV2 = "v2";
-        static final String removeVal = "v2";
+    static final String addV1 = "v1";
+    static final String addV2 = "v2";
+    static final String removeVal = "v2";
 
-    static final Set<TestClass<String>> Expected = VPNew.permutations(
+    private final ArrayList<String> list = new ArrayList<>();
+
+    static final Set<ArrayList<String>> Expected = ValidPermutations.permutations(
         List.of(
-            OperationTypes.add(addV1),
-            OperationTypes.remove(removeVal),
-            OperationTypes.snapshot()
-        ));
-
-        final TestClassOperation<String> add_v1 = new Add<String>(addV1);
-        final TestClassOperation<String> remove_v2 = new Remove<String>(removeVal);
-    TestClass<String> list = new TestClass<>();
-    TestClass<String> observed;
-   
+            Operations.add(addV1),
+            Operations.add(addV2),
+            Operations.remove(removeVal),
+            Operations.snapshot()
+        ), 
+        ArrayList::new);
+    
 
     @Actor
     public void actor1(){
-        list.add(addV1);  
+        synchronized( list ){
+            list.add(addV1);  
+        }
+        
     }
 
     @Actor
     public void actor2(){
-        list.remove(removeVal);
+        synchronized( list ){
+            list.add(addV2);
+        }
+    }
+
+    @Actor
+    public void actor3(){
+        synchronized( list ){
+            list.remove(removeVal);
+        }
     }
 
     //Thread safety - theory and how is it related? 
     //WHY? What it means in relation to my tests? 
     //Examples
 
-    //thread scheduler - running man times
-
 
     @Arbiter
     public void arbiter(Z_Result r){
 
-
-    r.r1 = Expected.contains(list);
+    List<String> snapshot = new ArrayList<>(list);
+    r.r1 = Expected.contains(snapshot);
         
 
     }
 }
+
+
+// ArrayList is not a thread-safe class. Without proper synchronization, concurrent modifications can lead to data corruption, inconsistent views of the list, and unexpected behavior.
+// In a multi-threaded environment, if multiple threads access and modify an ArrayList simultaneously without synchronization, it can result in lost updates, corrupted data, and runtime exceptions.
+// To ensure thread safety when using ArrayList in a concurrent context, you can use synchronization mechanisms such as synchronized blocks, locks, or concurrent collections like CopyOnWriteArrayList or Collections.synchronizedList.
+// Proper synchronization ensures that only one thread can modify the ArrayList at a time, preventing data corruption and ensuring consistent views of the list across threads.
+// In summary, using ArrayList in a multi-threaded environment without synchronization can lead to unpredictable and erroneous behavior, making it crucial to implement appropriate thread-safety measures.

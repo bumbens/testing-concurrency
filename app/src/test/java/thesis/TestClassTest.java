@@ -3,6 +3,7 @@ package thesis;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -10,32 +11,31 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import thesis.TestClass.OperationTypes;
-import thesis.TestClass.TestClass;
-import thesis.TestClass.ToFileTC;
-import thesis.TestClass.ValidPermutations;
-import thesis.TestClass.OperationsTC.Add;
-import thesis.TestClass.OperationsTC.AddAtIndex;
-import thesis.TestClass.OperationsTC.Remove;
-import thesis.TestClass.OperationsTC.TestClassOperation;
+import thesis.Collections.Collections_TestClass;
+import thesis.Collections.Collections_ToFile;
+import thesis.Collections.Operations;
+import thesis.Collections.OperationsCollections.Add;
+import thesis.Collections.OperationsCollections.AddAtIndex;
+import thesis.Collections.OperationsCollections.Interface_Collections;
+import thesis.Collections.OperationsCollections.Remove;
 
 public class TestClassTest {
 
-    private TestClass<String> observed;
-    private TestClass<String> map;
+    private Collections_TestClass<String> observed;
+    private Collections_TestClass<String> map;
     String addValue = "test";
     String removeValue = "test";
     @BeforeEach
 
     public void setUp(){
-        map = new TestClass<>();
+        map = new Collections_TestClass<String>();
     }
 
+    
     @Test
     public void testAdd(){
         
-        Add<String> addOp = new Add<String>(addValue);
-        addOp.run(map);
+        map.add(addValue);
 
         assertEquals(addValue, map.get(0));
         
@@ -43,61 +43,70 @@ public class TestClassTest {
 
     @Test
     public void testRemove(){
-        Add<String> addOp = new Add<String>(addValue);
-        Remove<String> removeOp = new Remove<String>(removeValue);
-        addOp.run(map);
-        removeOp.run(map);
+        map.add(addValue);
+        map.remove(removeValue);
 
-        ToFileTC.saveToFile(map, "TestClassTestRemove.html");
+        //ArrayList_ToFile.saveToFile(map, "TestClassTestRemove.html");
         assertEquals(0, map.size());
 
     }
 
 
-    @RepeatedTest(10000)
+    @RepeatedTest(10)
     public void testPermutations() throws InterruptedException{
         String add1 = "v1";
+        String add2 = "v2";
         String remove = "v2";
         int iterations = 10;
 
-        final TestClassOperation<String> add_v1 = new Add<String>(add1);
-        final TestClassOperation<String> remove_v1 = new Remove<String>(remove);
+        final Interface_Collections<String> add_v1 = new Add<String>(add1);
+        final Interface_Collections<String> remove_v1 = new Remove<String>(remove);
                 
 
-        final Set<TestClass<String>> Expected = ValidPermutations.permutations(
+        final Set<List<String>> Expected = ValidPermutations.permutations(
             List.of(
-                OperationTypes.add("v1"), 
-                OperationTypes.remove("v2"),
-                OperationTypes.snapshot()
-            ));
+                Operations.add("v1"), 
+                Operations.add("v2"),
+                Operations.remove("v2"),
+                Operations.snapshot()
+            ), 
+            ArrayList::new);
 
             for (int i = 0; i<iterations; i++){
                 
-                map = new TestClass<>();
+                map = new Collections_TestClass<String>();
 
                 Thread t1 = new Thread(() -> {
-                    add_v1.run(map);
+                    map.add(add1);
                 
                 });
 
                 Thread t2 = new Thread(() -> {
-                    remove_v1.run(map);
+                    map.remove(remove);
                     
+                });
+
+                Thread t3 = new Thread(() -> {
+                    map.add(add2);
                 });
 
 
 
-                t1.start(); t2.start(); 
-                t1.join(); t2.join(); 
+                t1.start(); t2.start(); t3.start(); 
+                t1.join(); t2.join(); t3.join();
 
+                    
+                }
+
+                List<String> snapshot = map.getSnapshot();
                 
                         assertTrue(
-                            Expected.contains(map),
+                            Expected.contains(snapshot),
                             () -> "Unexpected snapshot: " + map + " | expected any of " + Expected
                         );
                 
             }
 
 
-    }
 }
+

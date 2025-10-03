@@ -76,13 +76,38 @@ public final class TestClassJCStressTest_jcstress extends Runner<Z_Result> {
         }
     }
 
+    private static class JcstressThread_APICheck_actor3 extends VoidThread {
+        TestClassJCStressTest t;
+        TestClassJCStressTest s;
+        Z_Result r;
+
+        public JcstressThread_APICheck_actor3(TestClassJCStressTest t, TestClassJCStressTest s, Z_Result r) {
+            super("JcstressThread_APICheck_actor3");
+            this.t = t;
+            this.s = s;
+            this.r = r;
+        }
+
+        public void internalRun() {
+            s.actor3();
+        };
+
+        public void purge() {
+            t = null;
+            s = null;
+            r = null;
+        }
+    }
+
     private void jcstress_sanityCheck_API(Counter<Z_Result> counter) throws Throwable {
         final TestClassJCStressTest s = new TestClassJCStressTest();
         final Z_Result r = new Z_Result();
         VoidThread a0 = new JcstressThread_APICheck_actor1(null, s, r);
         VoidThread a1 = new JcstressThread_APICheck_actor2(null, s, r);
+        VoidThread a2 = new JcstressThread_APICheck_actor3(null, s, r);
         a0.start();
         a1.start();
+        a2.start();
         a0.join();
         if (a0.throwable() != null) {
             throw a0.throwable();
@@ -93,6 +118,11 @@ public final class TestClassJCStressTest_jcstress extends Runner<Z_Result> {
             throw a1.throwable();
         }
         a1.purge();
+        a2.join();
+        if (a2.throwable() != null) {
+            throw a2.throwable();
+        }
+        a2.purge();
             s.arbiter(r);
         counter.record(r, 1);
     }
@@ -159,6 +189,37 @@ public final class TestClassJCStressTest_jcstress extends Runner<Z_Result> {
         }
     }
 
+    private static class JcstressThread_ResourceCheck_actor3 extends LongThread {
+        TestClassJCStressTest[] ss;
+        Z_Result[] rs;
+        int size;
+
+        public JcstressThread_ResourceCheck_actor3(TestClassJCStressTest[] ss, Z_Result[] rs, int size) {
+            super("JcstressThread_ResourceCheck_actor3");
+            this.ss = ss;
+            this.rs = rs;
+            this.size = size;
+        }
+
+        public long internalRun() {
+            long a1 = AllocProfileSupport.getAllocatedBytes();
+            jcstress_check_actor3(ss, rs, size);
+            long a2 = AllocProfileSupport.getAllocatedBytes();
+            return a2 - a1;
+        }
+
+        private void jcstress_check_actor3(TestClassJCStressTest[] ls, Z_Result[] lr, int size) {
+            for (int c = 0; c < size; c++) {
+                ls[c].actor3();
+            }
+        }
+
+        public void purge() {
+            ss = null;
+            rs = null;
+        }
+    }
+
     private static class TestResourceEstimator implements ResourceEstimator {
         final Counter<Z_Result> counter;
 
@@ -179,8 +240,10 @@ public final class TestClassJCStressTest_jcstress extends Runner<Z_Result> {
             }
             LongThread a0 = new JcstressThread_ResourceCheck_actor1(ls, lr, size);
             LongThread a1 = new JcstressThread_ResourceCheck_actor2(ls, lr, size);
+            LongThread a2 = new JcstressThread_ResourceCheck_actor3(ls, lr, size);
             a0.start();
             a1.start();
+            a2.start();
             try {
                 a0.join();
                 cnts[0] += a0.result();
@@ -191,6 +254,12 @@ public final class TestClassJCStressTest_jcstress extends Runner<Z_Result> {
                 a1.join();
                 cnts[0] += a1.result();
                 a1.purge();
+            } catch (InterruptedException e) {
+            }
+            try {
+                a2.join();
+                cnts[0] += a2.result();
+                a2.purge();
             } catch (InterruptedException e) {
             }
             for (int c = 0; c < size; c++) {
@@ -219,7 +288,7 @@ public final class TestClassJCStressTest_jcstress extends Runner<Z_Result> {
             ls[c] = new TestClassJCStressTest();
             lr[c] = new Z_Result();
         }
-        workerSync = new WorkerSync(false, 2, config.spinLoopStyle);
+        workerSync = new WorkerSync(false, 3, config.spinLoopStyle);
 
         control.stopping = false;
 
@@ -231,9 +300,10 @@ public final class TestClassJCStressTest_jcstress extends Runner<Z_Result> {
             }
         }
 
-        ArrayList<CounterThread<Z_Result>> threads = new ArrayList<>(2);
+        ArrayList<CounterThread<Z_Result>> threads = new ArrayList<>(3);
         threads.add(new JcstressThread_actor1(ls, lr, null));
         threads.add(new JcstressThread_actor2(ls, lr, null));
+        threads.add(new JcstressThread_actor3(ls, lr, null));
 
         for (CounterThread<Z_Result> t : threads) {
             t.start();
@@ -252,8 +322,8 @@ public final class TestClassJCStressTest_jcstress extends Runner<Z_Result> {
     }
 
     public static void jcstress_ni_consume_final(Counter<Z_Result> cnt, TestClassJCStressTest[] ls, Z_Result[] lr, TestClassJCStressTest test, int len, int a) {
-        int left = a * len / 2;
-        int right = (a + 1) * len / 2;
+        int left = a * len / 3;
+        int right = (a + 1) * len / 3;
         for (int c = left; c < right; c++) {
             Z_Result r = lr[c];
             TestClassJCStressTest s = ls[c];
@@ -263,8 +333,8 @@ public final class TestClassJCStressTest_jcstress extends Runner<Z_Result> {
     }
 
     public static void jcstress_consume_reinit(Counter<Z_Result> cnt, TestClassJCStressTest[] ls, Z_Result[] lr, TestClassJCStressTest test, int len, int a) {
-        int left = a * len / 2;
-        int right = (a + 1) * len / 2;
+        int left = a * len / 3;
+        int right = (a + 1) * len / 3;
         for (int c = left; c < right; c++) {
             Z_Result r = lr[c];
             TestClassJCStressTest s = ls[c];
@@ -301,7 +371,7 @@ public final class TestClassJCStressTest_jcstress extends Runner<Z_Result> {
                 int check = 0;
                 for (int start = 0; start < len; start += stride) {
                     jcstress_stride_actor1(start, start + stride);
-                    check += 2;
+                    check += 3;
                     sync.awaitCheckpoint(check);
                 }
                 if (sync.stopping) {
@@ -311,7 +381,7 @@ public final class TestClassJCStressTest_jcstress extends Runner<Z_Result> {
                     jcstress_consume_reinit(counter, ss, rs, null, len, 0);
                 }
                 if (sync.tryStartUpdate()) {
-                    workerSync = new WorkerSync(control.stopping, 2, config.spinLoopStyle);
+                    workerSync = new WorkerSync(control.stopping, 3, config.spinLoopStyle);
                 }
                 sync.postUpdate();
             }
@@ -359,7 +429,7 @@ public final class TestClassJCStressTest_jcstress extends Runner<Z_Result> {
                 int check = 0;
                 for (int start = 0; start < len; start += stride) {
                     jcstress_stride_actor2(start, start + stride);
-                    check += 2;
+                    check += 3;
                     sync.awaitCheckpoint(check);
                 }
                 if (sync.stopping) {
@@ -369,7 +439,7 @@ public final class TestClassJCStressTest_jcstress extends Runner<Z_Result> {
                     jcstress_consume_reinit(counter, ss, rs, null, len, 1);
                 }
                 if (sync.tryStartUpdate()) {
-                    workerSync = new WorkerSync(control.stopping, 2, config.spinLoopStyle);
+                    workerSync = new WorkerSync(control.stopping, 3, config.spinLoopStyle);
                 }
                 sync.postUpdate();
             }
@@ -381,6 +451,64 @@ public final class TestClassJCStressTest_jcstress extends Runner<Z_Result> {
             for (int c = start; c < end; c++) {
                 TestClassJCStressTest s = ls[c];
                 s.actor2();
+            }
+        }
+
+        public void purge() {
+            ss = null;
+            rs = null;
+            test = null;
+        }
+    }
+
+    public class JcstressThread_actor3 extends CounterThread<Z_Result> {
+        TestClassJCStressTest[] ss;
+        Z_Result[] rs;
+        TestClassJCStressTest test;
+
+        public JcstressThread_actor3(TestClassJCStressTest[] ss, Z_Result[] rs, TestClassJCStressTest test) {
+            super("JcstressThread_actor3");
+            this.ss = ss;
+            this.rs = rs;
+            this.test = test;
+        }
+
+        public Counter<Z_Result> internalRun() {
+            return jcstress_iteration_actor3();
+        }
+
+        private Counter<Z_Result> jcstress_iteration_actor3() {
+            int len = config.strideSize * config.strideCount;
+            int stride = config.strideSize;
+            Counter<Z_Result> counter = new Counter<>();
+            if (config.localAffinity) AffinitySupport.bind(config.localAffinityMap[2]);
+            while (true) {
+                WorkerSync sync = workerSync;
+                int check = 0;
+                for (int start = 0; start < len; start += stride) {
+                    jcstress_stride_actor3(start, start + stride);
+                    check += 3;
+                    sync.awaitCheckpoint(check);
+                }
+                if (sync.stopping) {
+                    jcstress_ni_consume_final(counter, ss, rs, null, len, 2);
+                    return counter;
+                } else {
+                    jcstress_consume_reinit(counter, ss, rs, null, len, 2);
+                }
+                if (sync.tryStartUpdate()) {
+                    workerSync = new WorkerSync(control.stopping, 3, config.spinLoopStyle);
+                }
+                sync.postUpdate();
+            }
+        }
+
+        private void jcstress_stride_actor3(int start, int end) {
+            TestClassJCStressTest[] ls = ss;
+            Z_Result[] lr = rs;
+            for (int c = start; c < end; c++) {
+                TestClassJCStressTest s = ls[c];
+                s.actor3();
             }
         }
 
