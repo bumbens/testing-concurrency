@@ -16,7 +16,6 @@ import thesis.ValidPermutations;
 import thesis.Collections.Operations;
 
 
-//force bug or sth
 @JCStressTest
 @Outcome(id = "true", expect = Expect.ACCEPTABLE, desc = "All OK")
 @Outcome(id = "false", expect = Expect.FORBIDDEN, desc = "Unexpected state")
