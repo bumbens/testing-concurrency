@@ -2,7 +2,7 @@ package thesis.Collections.OperationsCollections;
 
 import java.util.Collection;
 
-public class Remove<T> implements Interface_Collections<Collection<? super T>> {
+public class Remove<T> implements Interface_Collections<Collection<T>> {
     private final T value;
 
     public Remove(T value){
@@ -10,7 +10,7 @@ public class Remove<T> implements Interface_Collections<Collection<? super T>> {
     }
 
     @Override
-    public void run(Collection<? super T> list) {
+    public void run(Collection<T> list) {
         list.remove(value);
     }
 }

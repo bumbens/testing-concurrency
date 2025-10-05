@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -12,16 +13,13 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import thesis.Collections.Collections_TestClass;
-import thesis.Collections.Collections_ToFile;
 import thesis.Collections.Operations;
 import thesis.Collections.OperationsCollections.Add;
-import thesis.Collections.OperationsCollections.AddAtIndex;
 import thesis.Collections.OperationsCollections.Interface_Collections;
 import thesis.Collections.OperationsCollections.Remove;
 
 public class TestClassTest {
 
-    private Collections_TestClass<String> observed;
     private Collections_TestClass<String> map;
     String addValue = "test";
     String removeValue = "test";
@@ -59,8 +57,8 @@ public class TestClassTest {
         String remove = "v2";
         int iterations = 10;
 
-        final Interface_Collections<String> add_v1 = new Add<String>(add1);
-        final Interface_Collections<String> remove_v1 = new Remove<String>(remove);
+        final Interface_Collections<Collection<String>> add_v1 = new Add<String>(add1);
+        final Interface_Collections<Collection<String>> remove_v1 = new Remove<String>(remove);
                 
 
         final Set<List<String>> Expected = ValidPermutations.permutations(

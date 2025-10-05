@@ -1,6 +1,5 @@
 package thesis.JCStress;
 
-import org.checkerframework.checker.units.qual.A;
 import org.openjdk.jcstress.annotations.Actor;
 import org.openjdk.jcstress.annotations.Arbiter;
 import org.openjdk.jcstress.annotations.Expect;
@@ -9,7 +8,7 @@ import org.openjdk.jcstress.annotations.Outcome;
 import org.openjdk.jcstress.annotations.State;
 import org.openjdk.jcstress.infra.results.L_Result;
 
-import thesis.CounterThreadsLock;
+import thesis.Examples.Counter.CounterSafe;
 
 @JCStressTest
 @Outcome(id = "2", expect = Expect.ACCEPTABLE, desc = "All OK")
@@ -17,7 +16,7 @@ import thesis.CounterThreadsLock;
 @State
 public class TurnstileJCStressTest {
     
-    CounterThreadsLock counter = new CounterThreadsLock();
+    CounterSafe counter = new CounterSafe();
 
     @Actor
     public void actor1(){
@@ -31,8 +30,8 @@ public class TurnstileJCStressTest {
 
     @Arbiter
     public void arbiter(L_Result r){
-        long res = counter.getCounter();
-        r.r1 = res;
+        long result = counter.getCounter();
+        r.r1 = result;
         
     }
 }
