@@ -6,9 +6,10 @@ import java.io.IOException;
 import java.util.List;
 
 import thesis.Collections.OperationsCollections.Operations_Collections;
+import thesis.Examples.ArrayList.ArrayList_Example;
 
 public class Collections_ToFile {
-    public static void saveToFile(Collections_TestClass<?> list, String filePath){
+    public static void saveToFile(ArrayList_Example<?> list, String filePath){
         List<? extends Operations_Collections<?>> history = list.getHistory();
 
         try{

@@ -1,6 +1,5 @@
 package thesis.Examples.Users;
 
-import java.util.Objects;
 
 public class Users {
     private String name;

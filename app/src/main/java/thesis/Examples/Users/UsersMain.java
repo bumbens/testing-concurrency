@@ -1,7 +1,6 @@
 package thesis.Examples.Users;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,15 +15,22 @@ public class UsersMain {
     private AtomicInteger opCounter = new AtomicInteger();
     /* --------------------------------------- */
     
-    public void addUser(String name, String from) {
+    public  void addUser(String name, String from) {
         users.add(new Users(name, from, true));
     }
 
-    public boolean removeUser(String name) {
-        return users.removeIf(u -> u.getName().equals(name));
+    public  boolean removeUser(String name) {
+        for(Users u : users){
+            if(u.getName().equals(name)){
+                users.remove(u);
+                return true;
+            }
+        }
+        return false;
     }
 
-    public void setStatus(String name, boolean online){
+
+    public  void setStatus(String name, boolean online){
         Users isPresent = users.stream()
             .filter(u -> u.getName().equals(name))
             .findFirst().orElse(null);
@@ -32,6 +38,19 @@ public class UsersMain {
             users.remove(isPresent);
             users.add(isPresent.setOnline(online));
         }
+    }
+
+    public void addIfAbsent(String name, String from) {
+        Users user = new Users(name, from, true);
+        if(!users.contains(user)){
+            users.add(user);
+        }
+    }
+
+    public  Users getUser(String name) {
+        return users.stream()
+            .filter(u -> u.getName().equals(name))
+            .findFirst().orElse(null);
     }
 
     public Set<Users> snapshot() {
@@ -67,21 +86,35 @@ public class UsersMain {
         return removed;
     }
 
+    public void addIfAbsent_Bench(String name, String from) {
+        int sizeBefore = users.size();
+        addIfAbsent(name, from);
+        int sizeAfter = users.size();
+        record("addIfAbsent", name, sizeBefore, sizeAfter);
+    }
+
     public void setStatus_Bench(String name, boolean online){
         int sizeBefore = users.size();
         setStatus(name, online);
         int sizeAfter = users.size();
-        record("setStatus", name, sizeBefore, sizeAfter);
+        if(online)
+            record("setStatusOnline", name, sizeBefore, sizeAfter);
+        else
+            record("setStatusOffline", name, sizeBefore, sizeAfter);
+    }
+
+    public Set<Users> finalSet(){
+        return users;
     }
 
     /* --------------------------------------- */
 
-    public static void main(String[] args) {
-        UsersMain main = new UsersMain();
-        main.addUser("alice", "DK");
-        main.addUser("peter", "US");
-        main.setStatus("alice", false);
-        main.removeUser("peter");
-        System.out.println(main.snapshot());
-    }
+    // public static void main(String[] args) {
+    //     UsersMain main = new UsersMain();
+    //     main.addUser("alice", "DK");
+    //     main.addUser("peter", "US");
+    //     main.setStatus("alice", false);
+    //     main.removeUser("peter");
+    //     System.out.println(main.snapshot());
+    // }
 }

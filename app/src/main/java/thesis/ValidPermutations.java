@@ -15,7 +15,11 @@ import thesis.Collections.Operations;
 
 
 public class ValidPermutations<T> {
-
+    // Use Supplier to create new instances of the collection
+    // This allows for flexibility in the type of collection used
+    // e.g., ArrayList, HashSet, LinkedList, etc.
+    // The factory is a functional interface that provides a method to create new instances
+    // of the specified collection type.
     public static <T, C extends Collection <T>> Set<C> permutations(List<Operations<T>> actors, Supplier<C> factory){
         Set<C> output = new LinkedHashSet<>();
         int actorsSize = actors.size();
@@ -69,6 +73,11 @@ public class ValidPermutations<T> {
                     break;
                 case SIZE:
                     currentState.size();
+                    break;
+                case ADDIFABSENT:
+                    if(!currentState.contains(operation.value)){
+                        currentState.add(operation.value);
+                    }
                     break;
                 case SNAPSHOT:
                     C snapshot = factory.get();

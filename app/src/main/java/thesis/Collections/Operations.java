@@ -17,6 +17,7 @@ public class Operations<T> {
     ISEMPTY,
     SIZE,
     SNAPSHOT,
+    ADDIFABSENT,
 
     /* List */
     ADD_AT_INDEX,
@@ -72,6 +73,7 @@ public static <T> Operations<T> clear()                                     { re
 public static <T> Operations<T> isEmpty()                                   { return new Operations<>(Type.ISEMPTY, null, -1, null); }
 public static <T> Operations<T> size()                                      { return new Operations<>(Type.SIZE, null, -1, null); }
 public static <T> Operations<T> snapshot()                                  { return new Operations<>(Type.SNAPSHOT, null, -1, null); }
+public static <T> Operations<T> addIfAbsent(T value)                        { return new Operations<>(Type.ADDIFABSENT, value, -1, null); }
 
 // --- List ---
 public static <T> Operations<T> add(int index, T value)                             { return new Operations<>(Type.ADD_AT_INDEX, value, index, null); }

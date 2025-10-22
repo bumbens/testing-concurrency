@@ -16,7 +16,6 @@ import thesis.ValidPermutations;
 import thesis.Collections.Operations;
 import thesis.Examples.Users.Users;
 import thesis.Examples.Users.UsersMain;
-import thesis.Examples.Users.UsersSafe;
 
 @JCStressTest
 @Outcome(id = "true", expect = Expect.ACCEPTABLE)
@@ -30,6 +29,8 @@ public class UsersJCStressTest {
         List.of(
             Operations.add(new Users("alice", "DK", true)),
             Operations.remove(new Users("alice", "DK", true)),
+            Operations.add(new Users("alice", "DK", false)),
+            Operations.add(new Users("peter", "US", true)),
             Operations.snapshot()
         ), 
         HashSet::new
@@ -43,6 +44,16 @@ public class UsersJCStressTest {
     @Actor
     public void actor2(){
         users.removeUser("alice");
+    }
+
+    @Actor
+    public void actor3(){
+        users.setStatus("alice", false);
+    }
+
+    @Actor
+    public void actor4(){
+        users.addUser("peter", "US");
     }
 
     @Arbiter

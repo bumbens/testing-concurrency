@@ -14,6 +14,7 @@ import org.openjdk.jcstress.infra.results.Z_Result;
 
 import thesis.ValidPermutations;
 import thesis.Collections.Operations;
+import thesis.Examples.ArrayList.ArrayList_Example;
 
 
 @JCStressTest
@@ -26,7 +27,7 @@ public class TestClassJCStressTest {
     static final String addV2 = "v2";
     static final String removeVal = "v2";
 
-    private final ArrayList<String> list = new ArrayList<>();
+    private final ArrayList_Example<String> list = new ArrayList_Example<>();
 
     static final Set<ArrayList<String>> Expected = ValidPermutations.permutations(
         List.of(
@@ -40,24 +41,17 @@ public class TestClassJCStressTest {
 
     @Actor
     public void actor1(){
-        synchronized( list ){
             list.add(addV1);  
-        }
-        
     }
 
     @Actor
     public void actor2(){
-        synchronized( list ){
             list.add(addV2);
-        }
     }
 
     @Actor
     public void actor3(){
-        synchronized( list ){
             list.remove(removeVal);
-        }
     }
 
     //Thread safety - theory and how is it related? 
@@ -68,7 +62,7 @@ public class TestClassJCStressTest {
     @Arbiter
     public void arbiter(Z_Result r){
 
-    List<String> snapshot = new ArrayList<>(list);
+    List<String> snapshot = list.getSnapshot();
     r.r1 = Expected.contains(snapshot);
         
 
