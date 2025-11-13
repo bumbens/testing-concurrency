@@ -13,9 +13,9 @@ import org.openjdk.jcstress.annotations.State;
 import org.openjdk.jcstress.infra.results.Z_Result;
 
 import thesis.ValidPermutations;
+import thesis.CaseStudies.Users.Users;
+import thesis.CaseStudies.Users.UsersMain;
 import thesis.Collections.Operations;
-import thesis.Examples.Users.Users;
-import thesis.Examples.Users.UsersMain;
 
 @JCStressTest
 @Outcome(id = "true", expect = Expect.ACCEPTABLE)

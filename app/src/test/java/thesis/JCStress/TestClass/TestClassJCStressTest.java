@@ -13,8 +13,8 @@ import org.openjdk.jcstress.annotations.State;
 import org.openjdk.jcstress.infra.results.Z_Result;
 
 import thesis.ValidPermutations;
+import thesis.CaseStudies.ArrayList.ArrayList_Example;
 import thesis.Collections.Operations;
-import thesis.Examples.ArrayList.ArrayList_Example;
 
 
 @JCStressTest

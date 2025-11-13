@@ -5,8 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+import thesis.CaseStudies.ArrayList.ArrayList_Example;
 import thesis.Collections.OperationsCollections.Operations_Collections;
-import thesis.Examples.ArrayList.ArrayList_Example;
 
 public class Collections_ToFile {
     public static void saveToFile(ArrayList_Example<?> list, String filePath){

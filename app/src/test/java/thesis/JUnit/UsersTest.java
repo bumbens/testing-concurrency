@@ -8,9 +8,9 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import thesis.ValidPermutations;
+import thesis.CaseStudies.Users.Users;
+import thesis.CaseStudies.Users.UsersMain;
 import thesis.Collections.Operations;
-import thesis.Examples.Users.Users;
-import thesis.Examples.Users.UsersMain;
 import thesis.HTML_Reports.ToFileReport;
 
 public class UsersTest {

@@ -13,8 +13,8 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import thesis.ValidPermutations;
+import thesis.CaseStudies.ArrayList.ArrayList_Example;
 import thesis.Collections.Operations;
-import thesis.Examples.ArrayList.ArrayList_Example;
 import thesis.HTML_Reports.ToFileReport;
 
 public class TestClassTest {
