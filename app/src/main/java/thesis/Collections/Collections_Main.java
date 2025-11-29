@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import thesis.ValidPermutations;
+import thesis.Oracle;
 
 public class Collections_Main {
 
     public <T> String testPermutations(){
 
-        Set<ArrayList<String>> Expected = ValidPermutations.permutations(
+        Set<ArrayList<String>> Expected = Oracle.sequences(
             List.of(
-                Operations.add("v1"),
-                Operations.add("v2"),
-                Operations.remove("v2"),
-                Operations.snapshot()
+                Operations.add(0, 0,"v1"),
+                Operations.add(0, 1,"v2"),
+                Operations.add(1, 0, "v3"),
+                Operations.snapshot(2, 0)
             ), 
             ArrayList::new);
 

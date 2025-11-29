@@ -11,8 +11,6 @@ import org.openjdk.jcstress.infra.results.L_Result;
 import thesis.CaseStudies.StringNumberer.NumberedString;
 import thesis.CaseStudies.StringNumberer.StringNumberer;
 
-
-
 public class StringNumbererJCStress {
     
     @JCStressTest
@@ -39,28 +37,35 @@ public class StringNumbererJCStress {
         }
     }
     
-    @JCStressTest
-    @Outcome(id = "0,null", expect = Expect.ACCEPTABLE, desc = "Reader ran before writer.")
-    @Outcome(id = "1,ok",   expect = Expect.ACCEPTABLE, desc = "Writer ran before reader; value visible.")
-    @Outcome(id = "1,null", expect = Expect.FORBIDDEN,  desc = "Writer ran first, but reader did not see value (visibility bug).")
-    @State
-    public static class FindTest {
 
-        final StringNumberer numberer = new StringNumberer();
-        volatile boolean published;
+@JCStressTest
+@Outcome(id = "ok",    expect = Expect.ACCEPTABLE, desc = "All visible.")
+@Outcome(id = "none",       expect = Expect.ACCEPTABLE, desc = "None visible.")
+@Outcome(id = "stale",      expect = Expect.FORBIDDEN, desc = "Some visible, some not.")
+@State
+public static class FindTest {
 
-        @Actor
-        public void actor1() {
-            numberer.findOrAdd("test");
-            published = true; 
-        }
+    private static final String A = "FB";
+    final StringNumberer map = new StringNumberer();
+    volatile int phase; 
 
-        @Actor
-        public void actor2(L_Result r) {
-            Object v = published ? numberer.find("test") : null;
-            r.r1 = (published ? "1" : "0") + "," + (v == null ? "null" : "ok");
-        }
+    @Actor
+    public void writer() {
+        map.findOrAdd(A); 
+        phase = 1;        // plain write, no HB
     }
+
+    @Actor
+    public void reader(L_Result r) {
+        int p = phase;            // plain read, no HB
+        if (p == 0) { r.r1 = "none"; return; }
+        r.r1 = (map.find(A) != null) ? "ok" : "stale";
+
+    }
+    
 }
 
-// no matter whether we use synchronized or concurrent map, JCStress tests fail
+}
+
+// -------------------------------------------------------------------------
+// I see where the problem is, but I can't code the solution (test)

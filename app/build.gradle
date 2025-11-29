@@ -46,11 +46,11 @@ test {
 }
 
 // JCStress runner task
-task jcstress(type: JavaExec) {
+tasks.register('jcstress', JavaExec) {
     dependsOn testClasses
-    main = 'org.openjdk.jcstress.Main'
-    classpath = files(sourceSets.test.output.classesDirs) + sourceSets.test.runtimeClasspath
-    args = ['v']
+    mainClass = 'org.openjdk.jcstress.Main'
+    classpath = sourceSets.test.runtimeClasspath
+    args = []
 }
 
 application {

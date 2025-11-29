@@ -24,18 +24,21 @@ package thesis.CaseStudies.StringNumberer;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+
+import javax.annotation.concurrent.ThreadSafe;
 
 /**
  * A class that numbers strings, so they can be placed in bitsets.
  *
  * @author Ondrej Lhotak
  */
+@ThreadSafe
 public class StringNumberer extends ArrayNumberer<NumberedString> {
 
-  private final Map<String, NumberedString> stringToNumbered = new ConcurrentHashMap<String, NumberedString>(1024);
+  private final Map<String, NumberedString> stringToNumbered = new HashMap<String, NumberedString>(1024);
   
-  public NumberedString findOrAdd(String s) {
+  
+  public synchronized NumberedString findOrAdd(String s) {
     NumberedString ret = stringToNumbered.get(s);
     if (ret == null) {
       ret = new NumberedString(s);
@@ -44,8 +47,30 @@ public class StringNumberer extends ArrayNumberer<NumberedString> {
     }
     return ret;
   }
+  
 
   public NumberedString find(String s) {
     return stringToNumbered.get(s);
   }
+
+      public static class StringNumbererFixed extends ArrayNumberer<NumberedString> {
+
+        private final Map<String, NumberedString> stringToNumbered = new HashMap<String, NumberedString>(1024);
+      
+      
+      public synchronized NumberedString findOrAdd(String s) {
+        NumberedString ret = stringToNumbered.get(s);
+        if (ret == null) {
+          ret = new NumberedString(s);
+          stringToNumbered.put(s, ret);
+          add(ret);
+        }
+        return ret;
+      }
+      
+
+      public synchronized NumberedString find(String s) {
+        return stringToNumbered.get(s);
+      }
+    }
 }

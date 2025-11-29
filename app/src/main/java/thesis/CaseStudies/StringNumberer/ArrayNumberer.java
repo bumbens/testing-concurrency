@@ -50,7 +50,7 @@ public class ArrayNumberer<E extends Numberable> implements IterableNumberer<E> 
     this.lastNumber = elements.length;
   }
 
-  private synchronized void resize(int n) {
+  private void resize(int n) {
     numberToObj = Arrays.copyOf(numberToObj, n);
   }
 
@@ -80,7 +80,7 @@ public class ArrayNumberer<E extends Numberable> implements IterableNumberer<E> 
   }
 
   @Override
-  public synchronized long get(E o) {
+  public long get(E o) {
     if (o == null) {
       return 0;
     }
@@ -92,7 +92,7 @@ public class ArrayNumberer<E extends Numberable> implements IterableNumberer<E> 
   }
 
   @Override
-  public synchronized E get(long number) {
+  public E get(long number) {
     if (number == 0) {
       return null;
     }
@@ -104,12 +104,12 @@ public class ArrayNumberer<E extends Numberable> implements IterableNumberer<E> 
   }
 
   @Override
-  public synchronized int size() {
+  public int size() {
     return lastNumber;
   }
 
   @Override
-  public synchronized Iterator<E> iterator() {
+  public Iterator<E> iterator() {
     return new Iterator<E>() {
       int cur = 1;
 
@@ -134,7 +134,7 @@ public class ArrayNumberer<E extends Numberable> implements IterableNumberer<E> 
   }
 
   @Override
-  public synchronized boolean remove(E o) {
+  public boolean remove(E o) {
     if (o == null) {
       return false;
     }

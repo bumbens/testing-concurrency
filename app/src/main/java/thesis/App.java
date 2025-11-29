@@ -3,6 +3,26 @@
  */
 package thesis;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import thesis.Collections.Operations;
+
 public class App {
 
+    public static void main(String[] args) {
+
+        Set<ArrayList<String>> expected = Oracle.sequences(
+            List.of(
+                Operations.add(0, 0,"v1"),
+                Operations.add(0, 1,"v2"),
+                Operations.add(1, 0, "v3"),
+                Operations.snapshot(0,0)
+            ), 
+            ArrayList::new);
+
+
+        System.out.println(expected);
+    }
 }
