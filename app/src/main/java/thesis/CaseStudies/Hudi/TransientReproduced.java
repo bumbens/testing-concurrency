@@ -27,8 +27,8 @@ public class TransientReproduced {
 
 
     public static class TransientReproducedFixed {
-        private volatile Object ref;              
-        private volatile boolean initialized;    
+        private Object ref;              
+        private boolean initialized;    
 
 
         public synchronized Object get() {

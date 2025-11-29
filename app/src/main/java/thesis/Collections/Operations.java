@@ -37,8 +37,8 @@ public class Operations<T> {
 
     ADD_FIRST,        // Deque
     ADD_LAST,         // Deque
-    PUSH,             // Deque (stack API)
-    POP               // Deque (stack API)
+    PUSH,             // Deque 
+    POP               // Deque 
 }
 
     public final Type type;

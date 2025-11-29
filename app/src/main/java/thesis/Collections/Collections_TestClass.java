@@ -10,12 +10,6 @@ import thesis.Collections.OperationsCollections.Operations_Collections;
 
 // T - same type consistenly used
 // ? - wildcard
-
-//Sprawdz czy jak jest addifabsent dodaje to moze byc nullpointerexception
-//Sprawdz czy addatindex zle indeksy
-//Sprawdz czy remove nieistniejacy element
-//Sprawdz czy get nieistniejacy element
-//definition 
 public class Collections_TestClass<T> {
     private List<T> list = new ArrayList<>();
     private List<Operations_Collections<T>> history = Collections.synchronizedList(new ArrayList<>());

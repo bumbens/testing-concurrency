@@ -52,12 +52,12 @@ public static class FindTest {
     @Actor
     public void writer() {
         map.findOrAdd(A); 
-        phase = 1;        // plain write, no HB
+        phase = 1;
     }
 
     @Actor
     public void reader(L_Result r) {
-        int p = phase;            // plain read, no HB
+        int p = phase;
         if (p == 0) { r.r1 = "none"; return; }
         r.r1 = (map.find(A) != null) ? "ok" : "stale";
 
@@ -66,6 +66,3 @@ public static class FindTest {
 }
 
 }
-
-// -------------------------------------------------------------------------
-// I see where the problem is, but I can't code the solution (test)
